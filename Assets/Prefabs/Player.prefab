@@ -154,7 +154,7 @@ GameObject:
   - component: {fileID: 8631334041540977730}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 200
+  healthText: {fileID: 0}
 --- !u!114 &2553698612445332935
 MonoBehaviour:
   m_ObjectHideFlags: 0

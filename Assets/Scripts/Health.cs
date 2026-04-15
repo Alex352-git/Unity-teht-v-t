@@ -1,38 +1,40 @@
 ﻿using UnityEngine;
+using TMPro;
 
-/// <summary>
-/// Health vastaa vain el�m�n m��r�st�.
-/// </summary>
 public class Health : MonoBehaviour
 {
-    // maksimi el�m�, voi vaihtaa editorin kautta
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private TextMeshProUGUI healthText;
 
-    // t�m�nhetkinen el�m�
     private int currentHealth;
 
-
-    public int CurrentHealth { get => currentHealth; }
+    public int CurrentHealth
+    {
+        get { return currentHealth; }
+        set
+        {
+            currentHealth = Mathf.Clamp(value, 0, maxHealth);
+            UpdateHealthText();
+        }
+    }
 
     void Awake()
     {
-        currentHealth = maxHealth;
+        CurrentHealth = maxHealth;
     }
 
-    /// <summary>
-    /// positiivinen arvo --> parantaa
-    /// negatiivinen arvo --> tekee vahinkoa
-    /// </summary>
     public void Modify(int amount)
     {
-        // Kasvattaa terveytt�
-        currentHealth += amount;
+        CurrentHealth += amount; // IMPORTANT: use the property
 
-        // Mathf.Clamp est�� arvon menemisen alle 0 tai yli maksimin
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-
-        // Testitulostus
-        Debug.Log("Health: " + currentHealth);
+        Debug.Log("Health: " + CurrentHealth);
     }
 
+    void UpdateHealthText()
+    {
+        if (healthText != null)
+        {
+            healthText.text = "HP: " + CurrentHealth;
+        }
+    }
 }

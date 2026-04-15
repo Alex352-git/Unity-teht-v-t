@@ -2,16 +2,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Player vastaa pelaajan toiminnasta (liikkuminen, hy�kk�ys).
-/// </summary>
 public class Player : MonoBehaviour
 {
     private Health health;
 
     void Awake()
     {
-        // TODO: hae Health-komponentti
         health = GetComponent<Health>();
     }
 
@@ -22,7 +18,7 @@ public class Player : MonoBehaviour
             Debug.LogError("Health-komponentti puuttuu");
         }
 
-        TakeDamage(1);
+        Load();
     }
 
     private void Update()
@@ -36,11 +32,19 @@ public class Player : MonoBehaviour
         {
             Heal(1);
         }
+
+        if (Keyboard.current.sKey.wasPressedThisFrame)
+        {
+            Save();
+        }
+            if (Keyboard.current.lKey.wasPressedThisFrame)
+            {
+                Load();
+        }
     }
 
     public void TakeDamage(int amount)
     {
-        // TODO: v�henn� el�m�� Healthin kautta
         health.Modify(-amount);
     }
 
@@ -49,5 +53,28 @@ public class Player : MonoBehaviour
         health.Modify(amount);
     }
 
-}
+    // SAVE
+    public void Save()
+    {
+        PlayerData playerData = new PlayerData(this);
 
+        string json = JsonUtility.ToJson(playerData);
+
+        File.WriteAllText($"{Application.dataPath}/playerData.json", json);
+    }
+
+    // LOAD
+    public void Load()
+    {
+        string path = $"{Application.dataPath}/playerData.json";
+
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
+
+            health.CurrentHealth = playerData.health;
+        }
+    }
+}
