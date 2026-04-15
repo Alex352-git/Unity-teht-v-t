@@ -2,13 +2,30 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    // The player only carries one key. 0 = No Key, 1 = Gold, 2 = Silver.
+    
+    public static PlayerInventory Instance { get; private set; }
+
     public int CurrentKeyID { get; private set; } = 0;
+
+    private void Awake()
+    {
+        
+        if (Instance != null && Instance != this)
+        {
+            
+            Destroy(gameObject);
+        }
+        else
+        {
+           
+            Instance = this;
+        }
+    }
 
     public void PickUpKey(int keyID)
     {
         CurrentKeyID = keyID;
-        Debug.Log("Picked up key ID: " + keyID);
+        Debug.Log("Poimittiin avain ID: " + keyID);
     }
 
     public bool HasKey(int keyID)
@@ -16,9 +33,9 @@ public class PlayerInventory : MonoBehaviour
         return CurrentKeyID == keyID;
     }
 
-    // Optional: Call this if you want the key to disappear from inventory after use
     public void UseKey()
     {
         CurrentKeyID = 0;
+        Debug.Log("Avain käytetty ja poistettu inventaariosta. (Key removed)");
     }
 }

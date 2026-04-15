@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Avaa arkun, jos pelaajalla on oikea avain ja hän painaa 'E'.
-/// </summary>
 public class ChestController : MonoBehaviour
 {
     [SerializeField] private Animator chestAnimator;
@@ -11,11 +8,9 @@ public class ChestController : MonoBehaviour
     [SerializeField] private int requiredKeyID;
 
     private bool isPlayerNear = false;
-    private PlayerInventory playerInventory;
 
     private void Awake()
     {
-        // Fallback just in case you forget to drag the Animator in the Inspector
         if (chestAnimator == null)
         {
             chestAnimator = GetComponent<Animator>();
@@ -24,7 +19,6 @@ public class ChestController : MonoBehaviour
 
     private void Update()
     {
-        // Only check for input if the player is standing in the trigger zone
         if (isPlayerNear && Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
         {
             TryOpenChest();
@@ -33,12 +27,14 @@ public class ChestController : MonoBehaviour
 
     private void TryOpenChest()
     {
-        if (playerInventory != null && playerInventory.HasKey(requiredKeyID))
+        
+        if (PlayerInventory.Instance != null && PlayerInventory.Instance.HasKey(requiredKeyID))
         {
             chestAnimator.SetTrigger("Open");
             Debug.Log("Arkku avattu! (Chest opened!)");
 
-            // playerInventory.UseKey(); // Uncomment if you want to consume the key
+            
+            PlayerInventory.Instance.UseKey();
         }
         else
         {
@@ -46,23 +42,19 @@ public class ChestController : MonoBehaviour
         }
     }
 
-    // Detect when player gets close to the chest
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerNear = true;
-            playerInventory = other.GetComponent<PlayerInventory>();
         }
     }
 
-    // Detect when player walks away from the chest
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
-            playerInventory = null;
         }
     }
 }
