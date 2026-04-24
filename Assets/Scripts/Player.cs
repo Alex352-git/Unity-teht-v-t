@@ -1,10 +1,15 @@
 ﻿using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
     private Health health;
+
+    public int Score;
+    public TextMeshProUGUI hpText;
+    public TextMeshProUGUI scoreText;
 
     void Awake()
     {
@@ -19,6 +24,7 @@ public class Player : MonoBehaviour
         }
 
         Load();
+        UpdateUI();
     }
 
     private void Update()
@@ -37,33 +43,51 @@ public class Player : MonoBehaviour
         {
             Save();
         }
-            if (Keyboard.current.lKey.wasPressedThisFrame)
-            {
-                Load();
+
+        if (Keyboard.current.lKey.wasPressedThisFrame)
+        {
+            Load();
         }
     }
 
     public void TakeDamage(int amount)
     {
         health.Modify(-amount);
+        UpdateUI();
     }
 
     public void Heal(int amount)
     {
         health.Modify(amount);
+        UpdateUI();
     }
 
-    // SAVE
+    public void AddScore(int amount)
+    {
+        Score += amount;
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        if (hpText != null && health != null)
+        {
+            hpText.text = $"HP: {health.CurrentHealth}";
+        }
+
+        if (scoreText != null)
+        {
+            scoreText.text = $"Score: {Score}";
+        }
+    }
+
     public void Save()
     {
         PlayerData playerData = new PlayerData(this);
-
         string json = JsonUtility.ToJson(playerData);
-
         File.WriteAllText($"{Application.dataPath}/playerData.json", json);
     }
 
-    // LOAD
     public void Load()
     {
         string path = $"{Application.dataPath}/playerData.json";
@@ -71,10 +95,12 @@ public class Player : MonoBehaviour
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-
             PlayerData playerData = JsonUtility.FromJson<PlayerData>(json);
 
             health.CurrentHealth = playerData.health;
+            Score = playerData.score;
+
+            UpdateUI();
         }
     }
 }
