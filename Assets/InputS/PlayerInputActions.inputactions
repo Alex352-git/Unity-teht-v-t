@@ -214,6 +214,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "New action map",
+            "id": "18461eb4-3382-4c59-8224-81b04f9b5bf7",
+            "actions": [
+                {
+                    "name": "Warrior.Attack",
+                    "type": "Button",
+                    "id": "a67b9205-5abb-4dbf-a661-dae8d59c5152",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Mage Attack",
+                    "type": "Button",
+                    "id": "bbd40e8b-4a7d-4e0b-b8e7-e3fa44877d89",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "12bf935d-4396-4f8f-a37d-2b940cf86cce",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Warrior.Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "76517e3f-716d-438f-b4c1-84a5cc3247b2",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mage Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
